@@ -3,30 +3,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile menu functionality
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
 
     // Toggle mobile menu
-    hamburger?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navMenu?.classList.toggle('active');
-    });
+    if (hamburger) {
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+    }
 
     // Close menu when link is clicked
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu?.classList.remove('active');
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
         });
     });
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-        if (!navMenu?.contains(e.target) && !hamburger?.contains(e.target)) {
-            navMenu?.classList.remove('active');
+        if (navMenu && hamburger && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
         }
     });
 
     // Navbar highlighting on scroll
     const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
 
     window.addEventListener('scroll', () => {
         let current = '';
@@ -47,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
 
 // ===== PARTICLE ANIMATION ENHANCEMENT =====
 function createFloatingParticles() {
